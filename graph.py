@@ -1,8 +1,9 @@
 import math
 from graphviz import Digraph
 
+#Drawing Trees
 def draw_huffman_tree(node, graph=None, parent=None, label=""):
-    """ Recursively draw a Huffman tree using Graphviz """
+   
     if graph is None:
         graph = Digraph(format="png")
         graph.attr(dpi="300")  # High resolution
@@ -24,9 +25,9 @@ def draw_huffman_tree(node, graph=None, parent=None, label=""):
 
     return graph
 
-# Improved Huffman Code Table (Better Layout)
+# Huffman Code Table
 def draw_huffman_codes_table(codes, max_rows_per_column=6):
-    """ Generate a Graphviz table that organizes Huffman codes into multiple columns neatly. """
+    
     graph = Digraph(format="png")
     graph.attr(dpi="300", rankdir="TB")  # Top to Bottom layout
 
