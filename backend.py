@@ -65,17 +65,17 @@ if __name__ == "__main__":
     # Build Huffman Tree
     huffman_root = build_huffman_tree(text)
 
-    # ✅ Generate Huffman Codes
+    # Generate Huffman Codes
     huffman_codes = create_codes(huffman_root)
     print("\nHuffman Codes Generated:")
     for char, code in sorted(huffman_codes.items(), key=lambda x: len(x[1])):  # Sorted by code length
         print(f"{repr(char)}: {code}")  # Use repr() to display special characters properly
 
-    # ✅ Encode input text
+    # Encode input text
     encoded_str = encode(text, huffman_codes)
     print(f"\nEncoded (first 100 bits): {encoded_str[:100]}... (truncated for display)")
 
-    # ✅ Decode back
+    # Decode back
     decoded_text = decode(encoded_str, huffman_codes)
     print(f"\nDecoded text matches: {text == decoded_text}")
 
@@ -84,7 +84,7 @@ if __name__ == "__main__":
     else:
         print("\nDecoding failed! Mismatch detected.")
 
-    # ✅ Draw Huffman Tree and Huffman Code Table
+    # Draw Huffman Tree and Huffman Code Table
     tree_graph = graph.draw_huffman_tree(huffman_root)
     code_graph = graph.draw_huffman_codes_table(huffman_codes)
 
