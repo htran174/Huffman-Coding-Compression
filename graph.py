@@ -24,7 +24,7 @@ def draw_huffman_tree(node, graph=None, parent=None, label=""):
 
     return graph
 
-# ✅ Improved Huffman Code Table (Better Layout)
+# Improved Huffman Code Table (Better Layout)
 def draw_huffman_codes_table(codes, max_rows_per_column=6):
     """ Generate a Graphviz table that organizes Huffman codes into multiple columns neatly. """
     graph = Digraph(format="png")
