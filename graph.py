@@ -1,4 +1,3 @@
-import math
 from graphviz import Digraph
 
 #Drawing Trees
@@ -26,33 +25,20 @@ def draw_huffman_tree(node, graph=None, parent=None, label=""):
     return graph
 
 # Huffman Code Table
-def draw_huffman_codes_table(codes, max_rows_per_column=6):
-    
+def draw_huffman_codes_table(codes):
     graph = Digraph(format="png")
     graph.attr(dpi="300", rankdir="TB")  # Top to Bottom layout
 
-    # Sort characters by code length for better structure
-    sorted_codes = sorted(codes.items(), key=lambda x: len(x[1]))
+    # Create an HTML-like table for better formatting
+    table_content = """<<TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">"""
+    table_content += """<TR><TD><B>Character</B></TD><TD><B>Huffman Code</B></TD></TR>"""
 
-    # Calculate number of columns needed
-    num_cols = math.ceil(len(sorted_codes) / max_rows_per_column)
+    for char, code in sorted(codes.items(), key=lambda x: len(x[1])):  # Sort by code length
+        char_display = repr(char) if char != " " else "SPACE"
+        table_content += f"<TR><TD>{char_display}</TD><TD>{code}</TD></TR>"
 
-    # Create a table structure
-    graph.node("title", "Huffman Code Table", shape="plaintext", fontsize="20")
+    table_content += "</TABLE>>"
 
-    # Create subgraphs for proper column alignment
-    columns = [[] for _ in range(num_cols)]
-
-    for i, (char, code) in enumerate(sorted_codes):
-        col = i % num_cols  # Distribute across columns
-        label = f'"{char}" → {code}'
-        node_name = f"code_{i}"
-        columns[col].append(node_name)
-        graph.node(node_name, label, shape="box", style="filled", fillcolor="lightyellow")
-
-    # Maintain column alignment using invisible edges
-    for col in columns:
-        for i in range(len(col) - 1):
-            graph.edge(col[i], col[i + 1], style="invis")  # Invisible edges for alignment
+    graph.node("table", table_content, shape="plaintext")
 
     return graph
