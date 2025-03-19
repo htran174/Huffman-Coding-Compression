@@ -8,21 +8,24 @@ import backend
 import graph
 
 def select_file():
-    """Allow the user to select a .txt file."""
+    #user to select a .txt file.
     file = filedialog.askopenfilename(title="Select a Text File", filetypes=[("Text Files", "*.txt")])
     file_path.set(file)
 
 def compress_file():
-    """Start compression with progress bar."""
+    #compression with progress bar
     if not file_path.get():
         messagebox.showwarning("Warning", "Please select a file first.")
         return
     
     progress_bar["value"] = 0
     progress_label.config(text="Compressing...")
+
+    #create a thread to do compression
     threading.Thread(target=run_compression, daemon=True).start()
 
 def run_compression():
+    #making huffman root and code into glabal varibale for graphs
     global huffman_root, huffman_codes
     
     with open(file_path.get(), 'r', encoding='utf-8') as f:
@@ -30,13 +33,15 @@ def run_compression():
     
     original_size = os.path.getsize(file_path.get())
     
+    #building tree
     huffman_root = backend.build_huffman_tree(text)
     huffman_codes = backend.create_codes(huffman_root)
     encoded_text = backend.encode(text, huffman_codes)
-    
-    print(encoded_text)
+
+    #move encoded text into bitarray 
     bit_arr = bitarray(encoded_text)
     
+    #put the bitarry into the file 
     with open("compress.bin", "wb") as f:
         bit_arr.tofile(f)
     
@@ -50,23 +55,24 @@ def run_compression():
 
     # Compute compression ratio
     compression_ratio = (100- (compressed_size / original_size) * 100)
-    
+
     # Show results in a new window
     result_window = tk.Toplevel(root)
     result_window.title("Compression Statistics")
     result_window.geometry("300x150")
-    
+
     tk.Label(result_window, text=f"Original File Size: {original_size} bytes").pack(pady=5)
     tk.Label(result_window, text=f"Compressed File Size: {compressed_size} bytes").pack(pady=5)
     tk.Label(result_window, text=f"Compression Ratio: {compression_ratio:.2f}%").pack(pady=5)
     
-    messagebox.showinfo("Success", "File compressed successfully!")
     progress_label.config(text="Compression Complete")
 
 def decompress_file():
-    """Start decompression with progress bar."""
+    #decompression with progress bar.
     progress_bar["value"] = 0
     progress_label.config(text="Decompressing...")
+
+    #create a thread
     threading.Thread(target=run_decompression, daemon=True).start()
 
 def run_decompression():
@@ -75,16 +81,24 @@ def run_decompression():
             bit_arr = bitarray()
             bit_arr.fromfile(f)
         
+        #moving back the bit_array into encoded text i.e 1 and 0
         encoded_text = bit_arr.to01()
         
+        #reading the orginal text file
         with open(file_path.get(), 'r', encoding='utf-8') as f:
             text = f.read()
+        
+        #creating roots and code
         huffman_root = backend.build_huffman_tree(text)
         huffman_codes = backend.create_codes(huffman_root)
         
+        #sending it to decoded function
         decoded_text = backend.decode(encoded_text, huffman_codes)
         
+        #name of decompress file
         decompressed_file_path = "decompress.txt"
+
+        #write it with the decoded text
         with open(decompressed_file_path, "w", encoding='utf-8') as f:
             f.write(decoded_text)
         
@@ -94,9 +108,11 @@ def run_decompression():
             progress_label.config(text=f"Progress: {i}%")   
             root.update_idletasks()
         
+        #getting orginal text
         with open(file_path.get(), "r", encoding="utf-8") as original_f:
             original_text = original_f.read()
         
+        #check if original text and decoded text match
         if original_text == decoded_text:
             messagebox.showinfo("Success", "Decompressed file matches the original input file!\nAnd is in decompress.txt")
         else:
@@ -104,11 +120,11 @@ def run_decompression():
         
         progress_label.config(text="Decompression Complete")
         
-    except Exception as e:
-        messagebox.showerror("Error", f"An error occurred: {str(e)}")
+    except Exception as error:
+        messagebox.showerror("Error", f"An error occurred: {str(error)}")
 
 def show_huffman_tree():
-    """Generate and display the Huffman tree."""
+    #Generate and display the Huffman tree 
     if huffman_root:
         tree_graph = graph.draw_huffman_tree(huffman_root)
         tree_graph.render("huffman_tree", view=True)
@@ -116,7 +132,7 @@ def show_huffman_tree():
         messagebox.showwarning("Warning", "No Huffman tree available. Compress a file first.")
 
 def show_huffman_table():
-    """Generate and display the Huffman code table."""
+    #Generate and display the Huffman code table
     if huffman_codes:
         code_graph = graph.draw_huffman_codes_table(huffman_codes)
         code_graph.render("huffman_codes", view=True)
