@@ -1,3 +1,17 @@
+"""
+======================================================================================================
+
+                                            main.py
+                            Created by Hien Tran, Helen Ngo, Maha Aljaffan
+
+                Gui that alows user to select a file and compress and decompress the file
+                Also has button that create and shows the Code table and Tree
+
+======================================================================================================
+"""
+
+
+
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 import os
