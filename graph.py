@@ -1,3 +1,14 @@
+"""
+======================================================================================================
+
+                                            graph.py
+                                        Created by Hien Tran
+                            Holds graph function to graph trees and nodes tables
+
+======================================================================================================
+"""
+
+
 from graphviz import Digraph
 
 #Drawing Trees
