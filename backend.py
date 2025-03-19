@@ -65,3 +65,8 @@ def decode(encoded_text, codes):
     return decoded_text
 
 
+def build_all(text): #do all the main function and sends it back
+    huffman_root = build_huffman_tree(text)
+    huffman_codes = create_codes(huffman_root)
+    encoded_text = encode(text, huffman_codes)
+    return huffman_root,huffman_codes,encoded_text
