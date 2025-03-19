@@ -108,12 +108,9 @@ def run_decompression():
         
         #sending it to decoded function
         decoded_text = backend.decode(encoded_text, huffman_codes)
-        
-        #name of decompress file
-        decompressed_file_path = "decompress.txt"
 
         #write it with the decoded text
-        with open(decompressed_file_path, "w", encoding='utf-8') as f:
+        with open("decompress.txt", "w", encoding='utf-8') as f:
             f.write(decoded_text)
         
         for i in range(101):  # Simulate progress
