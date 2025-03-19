@@ -100,9 +100,8 @@ def run_decompression():
         with open(file_path.get(), 'r', encoding='utf-8') as f:
             text = f.read()
         
-        #creating roots and code
-        huffman_root = backend.build_huffman_tree(text)
-        huffman_codes = backend.create_codes(huffman_root)
+        #Recreating roots and code incase user want to decompress a compress.bin when insti opening up program
+        huffman_root, huffman_codes, encoded_input_text = backend.build_all(text)
         
         #sending it to decoded function
         decoded_text = backend.decode(encoded_text, huffman_codes)
