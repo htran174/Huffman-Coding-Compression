@@ -48,9 +48,7 @@ def run_compression():
     original_size = os.path.getsize(file_path.get())
     
     #building tree
-    huffman_root = backend.build_huffman_tree(text)
-    huffman_codes = backend.create_codes(huffman_root)
-    encoded_text = backend.encode(text, huffman_codes)
+    huffman_root,huffman_codes,encoded_text = backend.build_all(text)
 
     #move encoded text into bitarray 
     bit_arr = bitarray(encoded_text)
