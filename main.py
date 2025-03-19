@@ -34,6 +34,7 @@ def run_compression():
     huffman_codes = backend.create_codes(huffman_root)
     encoded_text = backend.encode(text, huffman_codes)
     
+    print(encoded_text)
     bit_arr = bitarray(encoded_text)
     
     with open("compress.bin", "wb") as f:
@@ -48,7 +49,7 @@ def run_compression():
         root.update_idletasks()
 
     # Compute compression ratio
-    compression_ratio = (compressed_size / original_size) * 100
+    compression_ratio = (100- (compressed_size / original_size) * 100)
     
     # Show results in a new window
     result_window = tk.Toplevel(root)
