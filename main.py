@@ -120,6 +120,12 @@ def run_decompression():
         with open(file_path.get(), "r", encoding="utf-8") as original_f:
             original_text = original_f.read()
         
+        # decompressed text appears in text box
+        decompressed_text_box.config(state=tk.NORMAL)
+        decompressed_text_box.delete(1.0, tk.END)
+        decompressed_text_box.insert(tk.END, decoded_text)
+        decompressed_text_box.config(state=tk.DISABLED)
+
         #check if original text and decoded text match
         if original_text == decoded_text:
             messagebox.showinfo("Success", "Decompressed file matches the original input file!\nAnd is in decompress.txt")
@@ -127,7 +133,8 @@ def run_decompression():
             messagebox.showwarning("Mismatch", "Decompressed file does NOT match the original input file!")
         
         progress_label.config(text="Decompression Complete")
-        
+
+
     except Exception as error:
         messagebox.showerror("Error", f"An error occurred: {str(error)}")
 
@@ -149,55 +156,62 @@ def show_huffman_table():
 
 if __name__ == "__main__":
     #color
-    black = "#000000"    # Black text
-    white = "#FFFFFF"  # White text
-    dark_gray = "#2E2E2E"  # Dark gray
+    bg_color = "#1E1E2E"
+    box_color = "#282A36"
+    text_color = "#F8F8F2"
+    button_color = "#A7C7E7"
+    progress_color = "#6272A4"
+    font_style = ("Arial", 11, "bold")
 
     # Create the main window
     root = tk.Tk()
     root.title("Huffman Compression GUI")
-    root.geometry("450x400")
+    root.geometry("600x550")
 
-    root.configure(bg=dark_gray)
+    root.configure(bg=bg_color)
 
     file_path = tk.StringVar()
     huffman_root = None
     huffman_codes = None
 
     # File selection button
-    select_button = tk.Button(root, text="Select File", command=select_file, bg=dark_gray)
+    select_button = tk.Button(root, text="Select File", command=select_file, bg=button_color, font=font_style)
     select_button.pack(pady=10)
 
     # Display selected file path
-    file_label = tk.Label(root, textvariable=file_path, wraplength=400 , bg= dark_gray, fg= white)
+    file_label = tk.Label(root, textvariable=file_path, wraplength=400 , bg= bg_color, fg= text_color, font=font_style)
     file_label.pack(pady=5)
 
     # Progress bar and label
-    progress_label = tk.Label(root, text="", bg= dark_gray, fg= white)
-    progress_label.pack(pady=5)
+    progress_label = tk.Label(root, text="", bg= bg_color, fg= text_color, font=font_style)
+    progress_label.pack(pady=10)
 
     style = ttk.Style()
     style.theme_use("default")
-    style.configure("TProgressbar", background="#777777", troughcolor=dark_gray, bordercolor=black, lightcolor=black, darkcolor=black)
+    style.configure("TProgressbar", background=progress_color, troughcolor=box_color, bordercolor="black", lightcolor="black", darkcolor="black")
 
     progress_bar = ttk.Progressbar(root, style="TProgressbar", mode="determinate", length=300, maximum=100)
     progress_bar.pack(pady=10)
 
     # Compress button
-    compress_button = tk.Button(root, text="Compress", command=compress_file)
+    compress_button = tk.Button(root, text="Compress", command=compress_file , bg=button_color, font=font_style)
     compress_button.pack(pady=10)
 
      # Show Huffman tree button
-    tree_button = tk.Button(root, text="Show Huffman Tree", command=show_huffman_tree)
+    tree_button = tk.Button(root, text="Show Huffman Tree", command=show_huffman_tree, bg=button_color, font=font_style)
     tree_button.pack(pady=10)
 
     # Show Huffman table button
-    table_button = tk.Button(root, text="Show Huffman Table", command=show_huffman_table)
+    table_button = tk.Button(root, text="Show Huffman Table", command=show_huffman_table, bg=button_color, font=font_style)
     table_button.pack(pady=10)
 
     # Decompress button
-    decompress_button = tk.Button(root, text="Decompress", command=decompress_file)
+    decompress_button = tk.Button(root, text="Decompress", command=decompress_file, bg=button_color, font=font_style)
     decompress_button.pack(pady=10)
+
+    # Decompressed text box
+    decompressed_text_box = tk.Text(root, height=8, width=65, bg=box_color, fg=text_color, font=font_style, state=tk.DISABLED)
+    decompressed_text_box.pack(pady=10)
 
     # Run the GUI
     root.mainloop()
